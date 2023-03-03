@@ -7,23 +7,21 @@ type Props = React.HTMLProps<HTMLInputElement> & {
   type?: "checkbox" | "radio";
 };
 
-const CheckControl = ({
-  label,
-  id,
-  name,
-  type = "checkbox",
-  constainerClass,
-  inputClass,
-  ...rest
-}: Props) => {
+const CheckControl = (
+  {
+    label,
+    id,
+    name,
+    type = "checkbox",
+    constainerClass,
+    inputClass,
+    ...rest
+  }: Props,
+  ref: any
+) => {
   return (
     <div className={`form-check ${constainerClass}`}>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        {...rest}
-      />
+      <input ref={ref} type={type} id={id} name={name} {...rest} />
       {label && (
         <label className="form-check-label" htmlFor={id}>
           {label}
@@ -33,4 +31,4 @@ const CheckControl = ({
   );
 };
 
-export default CheckControl;
+export default React.forwardRef(CheckControl);

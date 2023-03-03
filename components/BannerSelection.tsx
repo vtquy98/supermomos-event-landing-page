@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { useModal } from "@/components/Modal";
 import Image from "next/image";
+import { Image as ImageLogo } from "@/images";
 
 type BannerListProps = {
   selected?: string;
@@ -53,7 +54,9 @@ const BannerListModal = ({ selected, onConfirm, onClose }: BannerListProps) => {
             <Suspense key={index} fallback={<div>Loading...</div>}>
               <div
                 onClick={() => setIsSelecting(image)}
-                className={`${isSelecting === image ? "banner-selected" : ""}`}
+                className={`banner-selection ${
+                  isSelecting === image ? "banner-selected" : ""
+                }`}
               >
                 <Image
                   src={image}
@@ -93,35 +96,48 @@ const BannerListModal = ({ selected, onConfirm, onClose }: BannerListProps) => {
 type Props = {
   value?: string;
   onChange: (poster: string) => void;
+  error?: string;
 };
 
-const BannerSelection = ({ value, onChange }: Props) => {
+const BannerSelection = ({ value, onChange, error }: Props) => {
   const { setModal, unSetModal } = useModal();
   return (
-    <div
-      className="cvmcff"
-      style={{ backgroundImage: value ? `url(${value})` : "" }}
-    >
-      <div className="btn-wrapper">
-        <button
-          type="button"
-          className="emHUzv"
-          onClick={() =>
-            setModal &&
-            setModal(
-              <BannerListModal
-                data-size="lg"
-                selected={value}
-                onConfirm={(img) => onChange(img)}
-                onClose={() => unSetModal && unSetModal()}
-              />
-            )
-          }
-        >
-          Add a banner
-        </button>
+    <>
+      <div
+        className="cvmcff"
+        style={{ backgroundImage: value ? `url(${value})` : "" }}
+      >
+        <div className="btn-wrapper">
+          <button
+            type="button"
+            className="emHUzv"
+            onClick={() =>
+              setModal &&
+              setModal(
+                <BannerListModal
+                  data-size="lg"
+                  selected={value}
+                  onConfirm={(img) => onChange(img)}
+                  onClose={() => unSetModal && unSetModal()}
+                />
+              )
+            }
+          >
+            <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center">
+                <Image width={24} height={24} alt="ico-date" src={ImageLogo} />
+              </div>
+              <div className="flex-grow-1 my-auto ms-3">Add a banner</div>
+            </div>
+          </button>
+        </div>
       </div>
-    </div>
+      {error && (
+        <div className="invalid-feedback" style={{ display: "block" }}>
+          {error}
+        </div>
+      )}
+    </>
   );
 };
 

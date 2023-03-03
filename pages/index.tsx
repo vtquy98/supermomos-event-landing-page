@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
 
 import {
   DateTimePicker,
@@ -12,7 +13,6 @@ import {
 import {
   Logo,
   Date as DateLogo,
-  Image as ImageLogo,
   Location,
   Money,
   People,
@@ -21,8 +21,24 @@ import {
 
 import styles from "../styles/Home.module.css";
 import CheckControl from "@/components/CheckControl";
+import moment from "moment";
+import { toast } from "react-toastify";
 
-type EventFormData = {
+type FormData = {
+  title: string;
+  startDate: string;
+  startTime: string;
+  venue: string;
+  capacity: number;
+  price?: number;
+  description: string;
+  banner: string;
+  tags: Array<string>;
+  isManualApprove?: boolean;
+  privacy: "Public" | "Curated Audience" | "Community Only" | "";
+};
+
+type CreateEventType = {
   title: string;
   startAt: Date;
   venue: string;
@@ -38,14 +54,14 @@ type EventFormData = {
 export default function Home() {
   const {
     register,
-    setValue,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<EventFormData>({
+  } = useForm<FormData>({
     defaultValues: {
       title: "Untitled Event",
-      startAt: new Date(),
+      startDate: Date().toString(),
+      startTime: Date().toString(),
       venue: "",
       capacity: 0,
       price: 0,
@@ -53,11 +69,45 @@ export default function Home() {
       banner: "",
       tags: [],
       isManualApprove: false,
-      privacy: "public",
+      privacy: "",
     },
   });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const createNewEvent = async (data: CreateEventType) => {
+    try {
+      const response = await axios.post(
+        "https://api.supermomos-dev.com/interview/social",
+        data
+      );
+
+      if (response.status === 200) {
+        toast.success("Event created");
+      }
+      
+    } catch (error) {
+      toast.error("Can not create event");
+    }
+  };
+
+  const onSubmit = handleSubmit((data) => {
+    const formData: CreateEventType = {
+      banner: data.banner,
+      capacity: data.capacity,
+      description: data.description,
+      isManualApprove: data.isManualApprove,
+      price: data.price,
+      privacy: data.privacy,
+      tags: data.tags,
+      title: data.title,
+      venue: data.venue,
+      startAt: moment(
+        `${moment(data.startDate).format("YYYY-MM-DD")} ${moment(
+          data.startTime
+        ).format("HH:mm")}`
+      ).toDate(),
+    };
+    createNewEvent(formData);
+  });
 
   return (
     <>
@@ -100,28 +150,32 @@ export default function Home() {
           <form onSubmit={onSubmit} className="row 0">
             <div className="position-relative row-flex row">
               <div className="h-100 col-lg-6 col-md-12 col-sm-12 col-12">
-                <div>
-                  <TextArea
-                    className="form-control title"
-                    style={{ height: "74px" }}
-                    {...register("title")}
-                  />
-                </div>
+                <Controller
+                  name="title"
+                  control={control}
+                  rules={{ required: "Title is required" }}
+                  render={({ field }) => (
+                    <TextArea
+                      error={errors.title?.message}
+                      className="form-control title"
+                      style={{ height: "74px" }}
+                      {...field}
+                    />
+                  )}
+                />
 
                 <div className="mt-1 g-3 row">
                   <div className="col-6">
                     <div className="d-flex align-items-center">
-                      <div className="d-flex align-items-center">
-                        <Image
-                          width={33}
-                          height={33}
-                          alt="ico-date"
-                          src={DateLogo}
-                        />
-                      </div>
+                      <Image
+                        width={33}
+                        height={33}
+                        alt="ico-date"
+                        src={DateLogo}
+                      />
                       <div className="flex-grow-1 my-auto ms-3">
                         <Controller
-                          name="startAt"
+                          name="startDate"
                           control={control}
                           render={({ field }) => <DateTimePicker {...field} />}
                         />
@@ -130,19 +184,19 @@ export default function Home() {
                   </div>
                   <div className="col-6">
                     <div className="d-flex align-items-center">
-                      <div className="d-flex">
-                        <Image
-                          width={33}
-                          height={33}
-                          alt="ico-time"
-                          src={Time}
-                        />
-                      </div>
+                      <Image width={33} height={33} alt="ico-time" src={Time} />
                       <div className="flex-grow-1 my-auto ms-3">
                         <Controller
-                          name="startAt"
+                          name="startTime"
                           control={control}
-                          render={({ field }) => <DateTimePicker {...field} />}
+                          render={({ field }) => (
+                            <DateTimePicker
+                              {...field}
+                              showTimeInput
+                              showTimeSelectOnly
+                              dateFormat="h:mm aa"
+                            />
+                          )}
                         />
                       </div>
                     </div>
@@ -162,8 +216,13 @@ export default function Home() {
                           <Controller
                             name="venue"
                             control={control}
+                            rules={{ required: "Venue is required" }}
                             render={({ field }) => (
-                              <Input placeholder="Venue" {...field} />
+                              <Input
+                                placeholder="Venue"
+                                error={errors.venue?.message}
+                                {...field}
+                              />
                             )}
                           />
                         </div>
@@ -184,10 +243,12 @@ export default function Home() {
                         <Controller
                           name="capacity"
                           control={control}
+                          rules={{ required: "Capacity is required" }}
                           render={({ field }) => (
                             <Input
                               placeholder="Max capacity"
                               type="number"
+                              error={errors.capacity?.message}
                               {...field}
                             />
                           )}
@@ -224,17 +285,19 @@ export default function Home() {
 
                 <div className="mt-4">
                   <label className="form-label" htmlFor="description">
-                    Description *
+                    Description
                   </label>
 
                   <Controller
                     name="description"
                     control={control}
+                    rules={{ required: "Description is required" }}
                     render={({ field }) => (
                       <TextArea
                         className="form-control"
                         style={{ height: "140px" }}
                         placeholder="Description of your event..."
+                        error={errors.description?.message}
                         {...field}
                       />
                     )}
@@ -267,26 +330,26 @@ export default function Home() {
                             <div className="d-block mb-2">
                               <div className="d-flex gap-4">
                                 <CheckControl
-                                  id="unlimited"
+                                  id="public"
                                   type="radio"
                                   label="Public"
-                                  value="unlimited"
+                                  value="Public"
                                   constainerClass="p-0"
                                   {...register("privacy")}
                                 />
                                 <CheckControl
-                                  id="one"
+                                  id="curatedAudience"
                                   type="radio"
                                   label="Curated Audience"
-                                  value="one"
+                                  value="Curated Audience"
                                   constainerClass="p-0"
                                   {...register("privacy")}
                                 />
                                 <CheckControl
-                                  id="specific"
+                                  id="communityOnly"
                                   type="radio"
                                   label="Community Only"
-                                  value="specific"
+                                  value="Community Only"
                                   constainerClass="p-0"
                                   {...register("privacy")}
                                 />
@@ -303,8 +366,10 @@ export default function Home() {
                             <Controller
                               name="tags"
                               control={control}
+                              rules={{ required: "Tags is required" }}
                               render={({ field }) => (
                                 <TagSelection
+                                  error={errors.tags?.message}
                                   tags={["social", "food", "drink"]}
                                   value={field.value}
                                   onChange={(tags) => field.onChange(tags)}
@@ -330,8 +395,10 @@ export default function Home() {
                 <Controller
                   name="banner"
                   control={control}
+                  rules={{ required: "Banner is required" }}
                   render={({ field }) => (
                     <BannerSelection
+                      error={errors.banner?.message}
                       onChange={(pos) => field.onChange(pos)}
                       value={field.value}
                     />

@@ -1,16 +1,27 @@
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import React, { ChangeEventHandler } from "react";
-import Datetime, { DatetimepickerProps } from "react-datetime";
+import DatePicker, { ReactDatePickerProps } from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 type Props = {
-  onChange: (value: Moment | string) => void;
-  value?: string | Date | Moment | undefined;
+  onChange: (value: Date | null) => void;
+  value?: string | undefined;
 };
 
-const DateTimePicker = (props: Props) => {
+const DateTimePicker = ({
+  value,
+  onChange,
+  ...rest
+}: Props & ReactDatePickerProps) => {
   return (
     <div>
-      <Datetime value={props.value} onChange={props.onChange} />
+      <DatePicker
+        className={"form-control"}
+        selected={moment(value).toDate()}
+        onChange={(date) => onChange(date)}
+        {...rest}
+      />
     </div>
   );
 };

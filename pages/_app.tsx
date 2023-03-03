@@ -1,11 +1,12 @@
 import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
-import "react-datetime/css/react-datetime.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import React from "react";
 import type { AppProps } from "next/app";
 
 import { ModalProvider } from "@/components/Modal";
+import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ModalProvider>
+      <ToastContainer />
       <Component {...pageProps} />
     </ModalProvider>
   );

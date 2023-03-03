@@ -236,7 +236,12 @@ body {
   opacity: 0.5;
 }
 
+.banner-selection {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
 .banner-selected {
-  border: 1px solid #f2f2f2;
-  border-radius: 8px;
+  border: 1px solid rgba(148, 47, 112, 1);
 }
