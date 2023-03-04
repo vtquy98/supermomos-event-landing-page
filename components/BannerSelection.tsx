@@ -76,17 +76,17 @@ const BannerListModal = ({ selected, onConfirm, onClose }: BannerListProps) => {
           data-bs-dismiss="modal"
           onClick={onClose}
         >
-          Cancel
+          Close
         </button>
         <button
           type="button"
-          className="btn btn-primary"
+          className="text-purple bg-yellow border-0 p-2 px-4 rounded-2"
           onClick={() => {
             onConfirm(isSelecting);
             onClose();
           }}
         >
-          Confirm
+          Save
         </button>
       </div>
     </>
@@ -104,13 +104,13 @@ const BannerSelection = ({ value, onChange, error }: Props) => {
   return (
     <>
       <div
-        className="cvmcff"
+        className="banner-wrapper"
         style={{ backgroundImage: value ? `url(${value})` : "" }}
       >
         <div className="btn-wrapper">
           <button
             type="button"
-            className="emHUzv"
+            className="open-banner-btn"
             onClick={() =>
               setModal &&
               setModal(

@@ -1,84 +1,5 @@
-:root {
-  --bs-blue: #0d6efd;
-  --bs-indigo: #6610f2;
-  --bs-pink: #d63384;
-  --bs-red: #dc3545;
-  --bs-orange: #fd7e14;
-  --bs-green: #198754;
-  --bs-cyan: #0dcaf0;
-  --bs-white: #fff;
-  --bs-gray: #475467;
-  --bs-gray-dark: #343a40;
-  --bs-gray-100: #f8f9fa;
-  --bs-gray-300: #dee2e6;
-  --bs-gray-700: #495057;
-  --bs-gray-800: #343a40;
-  --bs-gray-900: #212529;
-  --bs-primary: #fef452;
-  --bs-secondary: #942f70;
-  --bs-warning: #d9ba2c;
-  --bs-danger: #dc3545;
-  --bs-muted: #f2f2f2;
-  --bs-teal: #01b2ba;
-  --bs-yellow: #fef452;
-  --bs-purple: #942f70;
-  --bs-dark-blue: #14597a;
-  --bs-white-smoke: #f5f5f5;
-  --bs-gray-200: #e4e7ec;
-  --bs-gray-400: #98a2b3;
-  --bs-gray-500: #f9fafb;
-  --bs-gray-600: #475467;
-  --bs-primary-rgb: 254, 244, 82;
-  --bs-secondary-rgb: 148, 47, 112;
-  --bs-warning-rgb: 217, 186, 44;
-  --bs-danger-rgb: 220, 53, 69;
-  --bs-muted-rgb: 242, 242, 242;
-  --bs-teal-rgb: 1, 178, 186;
-  --bs-yellow-rgb: 254, 244, 82;
-  --bs-purple-rgb: 148, 47, 112;
-  --bs-dark-blue-rgb: 20, 89, 122;
-  --bs-white-smoke-rgb: 245, 245, 245;
-  --bs-gray-200-rgb: 228, 231, 236;
-  --bs-gray-400-rgb: 152, 162, 179;
-  --bs-gray-500-rgb: 249, 250, 251;
-  --bs-gray-600-rgb: 71, 84, 103;
-  --bs-white-rgb: 255, 255, 255;
-  --bs-black-rgb: 0, 0, 0;
-  --bs-body-color-rgb: 102, 112, 133;
-  --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  --bs-gradient: linear-gradient(
-    180deg,
-    hsla(0, 0%, 100%, 0.15),
-    hsla(0, 0%, 100%, 0)
-  );
-  --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 1rem;
-  --bs-body-font-weight: 400;
-  --bs-body-line-height: 1.5;
-  --bs-body-color: #667085;
-  --bs-body-bg: #fff;
-}
-
 body {
   background: linear-gradient(138.11deg, #fef452 0%, #942f70 121.92%);
-}
-
-body {
-  margin: 0;
-  font-family: var(--bs-body-font-family);
-  font-size: var(--bs-body-font-size);
-  font-weight: var(--bs-body-font-weight);
-  line-height: var(--bs-body-line-height);
-  color: var(--bs-body-color);
-  text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 #header {
@@ -169,7 +90,7 @@ body {
   }
 }
 
-.cvmcff {
+.banner-wrapper {
   position: relative;
   height: 390px;
   background-color: transparent;
@@ -177,6 +98,22 @@ body {
   border-radius: 0px 64px;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.open-banner-btn {
+  border: none;
+  background: transparent;
+  color: rgb(20, 89, 122);
+  font-size: 20px;
+}
+
+.banner-wrapper .btn-wrapper {
+  height: 100%;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
 }
 
 .form-control.title {
@@ -199,22 +136,6 @@ body {
 .badge-custom-selected {
   background: #f9f5ff;
   color: rgba(148, 47, 112, 1);
-}
-
-.emHUzv {
-  border: none;
-  background: transparent;
-  color: rgb(20, 89, 122);
-  font-size: 20px;
-}
-
-.cvmcff .btn-wrapper {
-  height: 100%;
-  display: flex;
-  -webkit-box-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  align-items: center;
 }
 
 .text-purple {

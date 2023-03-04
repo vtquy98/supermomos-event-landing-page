@@ -1,28 +1,28 @@
-import Image from "next/image";
-import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
+import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Image from "next/image";
+import Head from "next/head";
 
 import {
+  BannerSelection,
   DateTimePicker,
   Input,
-  BannerSelection,
   TagSelection,
   TextArea,
 } from "@/components";
-
 import {
-  Logo,
   Date as DateLogo,
   Location,
+  Logo,
   Money,
   People,
   Time,
 } from "@/images";
+import CheckControl from "@/components/CheckControl";
 
 import styles from "../styles/Home.module.css";
-import CheckControl from "@/components/CheckControl";
-import moment from "moment";
-import { toast } from "react-toastify";
 
 type FormData = {
   title: string;
@@ -75,16 +75,12 @@ export default function Home() {
 
   const createNewEvent = async (data: CreateEventType) => {
     try {
-      const response = await axios.post(
-        "https://api.supermomos-dev.com/interview/social",
-        data
-      );
+      const response = await axios.post("/api/event", data);
 
       if (response.status === 200) {
         toast.success("Event created");
       }
-      
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Can not create event");
     }
   };
@@ -111,6 +107,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Create Event</title>
+      </Head>
+
       <main className={styles.main}>
         <nav
           id="header"
@@ -305,8 +305,8 @@ export default function Home() {
                 </div>
 
                 <div className="mt-3">
-                  <section className="Settingstyles__SettingWrapper-sc-w67phz-0 dQNRSJ">
-                    <div className="FormSocialstyles__CardForm-sc-my60xn-2 jfUmJp card">
+                  <section>
+                    <div className="card">
                       <div className="p-4">
                         <h2 className="heading-4 text-purple flex-grow-1">
                           <span className="bg-yellow px-3 py-1">Settings</span>
@@ -334,23 +334,22 @@ export default function Home() {
                                   type="radio"
                                   label="Public"
                                   value="Public"
-                                  constainerClass="p-0"
                                   {...register("privacy")}
                                 />
+
                                 <CheckControl
                                   id="curatedAudience"
                                   type="radio"
                                   label="Curated Audience"
                                   value="Curated Audience"
-                                  constainerClass="p-0"
                                   {...register("privacy")}
                                 />
+
                                 <CheckControl
                                   id="communityOnly"
                                   type="radio"
                                   label="Community Only"
                                   value="Community Only"
-                                  constainerClass="p-0"
                                   {...register("privacy")}
                                 />
                               </div>
@@ -370,7 +369,7 @@ export default function Home() {
                               render={({ field }) => (
                                 <TagSelection
                                   error={errors.tags?.message}
-                                  tags={["social", "food", "drink"]}
+                                  tags={["Product", "Marketing", "Design"]}
                                   value={field.value}
                                   onChange={(tags) => field.onChange(tags)}
                                 />
@@ -383,7 +382,7 @@ export default function Home() {
                     <div className="mt-3">
                       <button
                         type="submit"
-                        className="text-purple w-100 btn btn-primary"
+                        className="text-purple w-100 bg-yellow border-0 p-2 rounded-2"
                       >
                         CREATE SOCIAL
                       </button>

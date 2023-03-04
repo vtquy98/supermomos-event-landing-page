@@ -21,7 +21,7 @@ const CheckControl = (
 ) => {
   return (
     <div className={`form-check ${constainerClass}`}>
-      <input ref={ref} type={type} id={id} name={name} {...rest} />
+      <input className="form-check-input" ref={ref} type={type} id={id} name={name} {...rest} />
       {label && (
         <label className="form-check-label" htmlFor={id}>
           {label}
