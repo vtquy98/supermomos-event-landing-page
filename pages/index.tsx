@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Head from "next/head";
+import React from "react";
 
 import {
   BannerSelection,
@@ -73,17 +74,22 @@ export default function Home() {
     },
   });
 
-  const createNewEvent = async (data: CreateEventType) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const createNewEvent = React.useCallback(async (data: CreateEventType) => {
     try {
+      setIsLoading(true);
       const response = await axios.post("/api/event", data);
 
       if (response.status === 200) {
+        setIsLoading(false);
         toast.success("Event created");
       }
     } catch (error: any) {
+      setIsLoading(false);
       toast.error("Can not create event");
     }
-  };
+  }, []);
 
   const onSubmit = handleSubmit((data) => {
     const formData: CreateEventType = {
@@ -381,10 +387,15 @@ export default function Home() {
                     </div>
                     <div className="mt-3">
                       <button
+                        disabled={isLoading}
                         type="submit"
                         className="text-purple w-100 bg-yellow border-0 p-2 rounded-2"
                       >
-                        CREATE SOCIAL
+                        {isLoading ? (
+                          <span className="spinner-border spinner-border-sm me-2" />
+                        ) : (
+                          "CREATE SOCIAL"
+                        )}
                       </button>
                     </div>
                   </section>
